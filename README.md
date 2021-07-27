@@ -1,1 +1,3 @@
 # tradingTest
+
+para hacer practicas
