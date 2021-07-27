@@ -48,7 +48,10 @@ public class ScheduledTasks {
 	
 	//private volatile long last_update_id = -1;//se usa en las llamadas a telegram, cada vez que recibimos updates de telegram, la proxima llamada tenemos que hacerla con un offset = last_update_id +1 para que telegram marque los updates como vistos y no los manda mas
 
-	crear usuario!
+	@Scheduled(initialDelay = 5000, fixedDelay=Long.MAX_VALUE)//al tener tanto tiempo nunca se va a volver a ejecutar
+	public void onStartUp() {
+		
+	}
 	
 	@Scheduled(cron = "0 0 3 * * *")//todos los dias a las 3:00 am
 	public void doTheCleaning() {
