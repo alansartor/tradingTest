@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="AYUDA.Ayuda.LISTAR_POPUP" extends="ayudaPopUp.template">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="Ayuda" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+    	<put-attribute name="body" value="/WEB-INF/pages/AYUDA/Ayuda/ayudaListar.jsp" cascade="true"/>
+    	<put-attribute name="bodyExtended" value="" cascade="true"/>
+    </definition>
+	<!-- Las paginas con el contenido de ayuda no heredan de nadie, son mas estaticas, y se muestran dentro de paginas de forma dinamica,
+    por lo que no podrian tener javascript por el momento ni nada complicado -->
+    <definition name="AYUDA.GASTOGLOBAL_NUEVO_COSTODESCONTADO.VER" template="/WEB-INF/pages/AYUDA/ESTABLECIMIENTO/GastoGlobal/gastoGlobalNuevoCostoDescontadoAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="GASTOGLOBAL_NUEVO_COSTODESCONTADO" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>    
+    <definition name="AYUDA.GASTOGLOBAL_LISTAR_COMPROBANTE_ID.VER" template="/WEB-INF/pages/AYUDA/ESTABLECIMIENTO/GastoGlobal/gastoGlobalListarComprobanteIdAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="GASTOGLOBAL_LISTAR_COMPROBANTE_ID" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.MOVIMIENTO_NUEVO_TIPOMOVIMIENTO.VER" template="/WEB-INF/pages/AYUDA/MOVIMIENTOS/Movimiento/movimientoNuevoTipoMovimientoAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="MOVIMIENTO_NUEVO_TIPOMOVIMIENTO" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.MOVIMIENTO_NUEVO_TIPOORIGEN.VER" template="/WEB-INF/pages/AYUDA/MOVIMIENTOS/Movimiento/movimientoNuevoTipoOrigenAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="MOVIMIENTO_NUEVO_TIPOORIGEN" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.MOVIMIENTO_NUEVO_NROCOMPROBANTE.VER" template="/WEB-INF/pages/AYUDA/MOVIMIENTOS/Movimiento/movimientoNuevoNroComprobanteAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="MOVIMIENTO_NUEVO_NROCOMPROBANTE" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.MOVIMIENTO_NUEVO_ULTIMOMOVIMIENTOPARCIAL.VER" template="/WEB-INF/pages/AYUDA/MOVIMIENTOS/Movimiento/movimientoNuevoUltimoMovimientoParcialAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="MOVIMIENTO_NUEVO_ULTIMOMOVIMIENTOPARCIAL" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.MOVIMIENTO_NUEVO_NETO.VER" template="/WEB-INF/pages/AYUDA/MOVIMIENTOS/Movimiento/movimientoNuevoNetoAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="MOVIMIENTO_NUEVO_NETO" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition> 
+    <definition name="AYUDA.COMPROBANTE_COMPRA_NUEVO_CONDICIONPAGO_ID.VER" template="/WEB-INF/pages/AYUDA/COMPRA/ComprobanteCompra/comprobanteCompraNuevoCondicionPagoIdAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="COMPROBANTE_COMPRA_NUEVO_CONDICIONPAGO_ID" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.COMPROBANTE_COMPRA_NUEVO_OBSERVACIONES.VER" template="/WEB-INF/pages/AYUDA/COMPRA/ComprobanteCompra/comprobanteCompraNuevoObservacionesAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="COMPROBANTE_COMPRA_NUEVO_OBSERVACIONES" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.COMPROBANTE_COMPRA_LISTAR.VER" template="/WEB-INF/pages/AYUDA/COMPRA/ComprobanteCompra/comprobanteCompraListarAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="COMPROBANTE_COMPRA_LISTAR" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.COMPROBANTE_COMPRA_LISTAR_PRODUCTO_ID.VER" template="/WEB-INF/pages/AYUDA/COMPRA/ComprobanteCompra/comprobanteCompraListarProductoIdAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="COMPROBANTE_COMPRA_LISTAR_PRODUCTO_ID" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.LABOR_LISTAR.VER" template="/WEB-INF/pages/AYUDA/PRODUCCION/Labor/laborListarAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="LABOR_LISTAR" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>          
+    <definition name="AYUDA.LABOR_NUEVO_PRODUCTO_LABOR_ID.VER" template="/WEB-INF/pages/AYUDA/PRODUCCION/Labor/laborNuevoProductoLaborIdAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="LABOR_NUEVO_PRODUCTO_LABOR_ID" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.PRODUCCION_NUEVO_PRODUCIDO.VER" template="/WEB-INF/pages/AYUDA/PRODUCCION/Produccion/produccionNuevoProducido.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="PRODUCCION_NUEVO_PRODUCIDO" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>   
+    <definition name="AYUDA.LABOR_LISTAR_COMPROBANTE_ID.VER" template="/WEB-INF/pages/AYUDA/PRODUCCION/Labor/laborListarComprobanteIdAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="LABOR_LISTAR_COMPROBANTE_ID" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>
+    <definition name="AYUDA.REPORTE_FLUJOCAJA_LISTAR.VER" template="/WEB-INF/pages/AYUDA/REPORTES/FlujoCaja/flujoCajaListarAyuda.jsp">
+    	<put-attribute name="modulo" value="AYUDA" cascade="true"/>
+    	<put-attribute name="clase" value="REPORTE_FLUJOCAJA_LISTAR" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    </definition>    
+</tiles-definitions>

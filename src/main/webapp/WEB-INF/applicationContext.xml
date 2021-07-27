@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-sftp="http://www.springframework.org/schema/integration/sftp"
+	xsi:schemaLocation="  
+        http://www.springframework.org/schema/beans 			http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+        http://www.springframework.org/schema/util 				http://www.springframework.org/schema/util/spring-util-4.3.xsd  
+        http://www.springframework.org/schema/context 			http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+        http://www.springframework.org/schema/aop 				http://www.springframework.org/schema/aop/spring-aop-4.3.xsd  
+        http://www.springframework.org/schema/tx 				http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       	http://www.springframework.org/schema/task 				http://www.springframework.org/schema/task/spring-task-4.3.xsd
+       	http://www.springframework.org/schema/mvc 				http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+       	http://www.springframework.org/schema/integration
+           http://www.springframework.org/schema/integration/spring-integration.xsd
+       	http://www.springframework.org/schema/integration/sftp 	http://www.springframework.org/schema/integration/sftp/spring-integration-sftp.xsd">
+	
+<!-- 	The application-context.xml can optionally be included when using Spring MVC or any other framework for that matter. -->
+<!-- 	This gives you a container that may be used to configure other types of spring beans that provide support for things like data persistence. -->
+<!-- 	Basically, in this configuration file is where you pull in all of the other goodies Spring offers -->
+
+<!-- The applicationContext.xml defines the beans for the "root webapp context", i.e. the context associated with the webapp. -->
+<!-- The spring-servlet.xml (or whatever else you call it) defines the beans for one servlet's app context. There can be many of these in a webapp, one per Spring servlet (e.g. spring1-servlet.xml for servlet spring1, spring2-servlet.xml for servlet spring2). -->
+<!-- Beans in spring-servlet.xml can reference beans in applicationContext.xml, but not vice versa. -->
+<!-- All Spring MVC controllers must go in the spring-servlet.xml context. -->
+	
+	<!-- Internationalization & Localization (para poder usarlos en los Service, lo traje de este lado, ya que de aca no se ven los bean de dispatcher-servlet) -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <property name="basenames">
+	        <list>
+	            <value>classpath:messages_error</value>
+	            <value>classpath:messages</value>
+	        </list>
+	    </property>
+    	<property name="defaultEncoding" value="UTF-8"/>
+    	<property name="cacheSeconds" value="60"/> 
+    	<property name="useCodeAsDefaultMessage" value="true" /><!-- para que no arroje excepcion cuando no encuentra el texto! --> 
+	</bean>
+	
+	       
+    <!-- looks for annotations on beans in the same application context in which it is defined -->
+	<!-- <context:component-scan base-package="ar.com.signals.trading" /> -->
+	<context:component-scan base-package="ar.com.signals.trading">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.scheduling.annotation.Scheduled"/>
+    </context:component-scan>
+	<!-- Component-scan busca en xml y annotation -->
+ 	<!-- <context:annotation-config /> -->
+    
+    <!-- Config transacction manager -->
+	<tx:annotation-driven />
+    
+    <!-- IMPORTANTE: esto dejarlo aca, porque si se pone en applicationContext, se ve que se carga antes en el context de Spring, pero como ScheduledTasks tiene referencia a algunos servicios Transaccionales, entonces fallas esos servicios -->
+    <!-- enable the support for scheduling tasks and the @Scheduled annotation in Spring -->
+	<task:annotation-driven scheduler="myScheduler"/>
+    <task:scheduler id="myScheduler" pool-size="10"/>
+    
+    <context:property-placeholder location="classpath:/environment/environment.properties" />
+    
+  	<!-- Loads Hibernate configuration -->
+ 	<import resource="hibernate5Config.xml" />
+ 	
+ 	<!-- Loads Mail configuration -->
+ 	<import resource="mail-config.xml" />
+
+ 	<bean id="servidorUtil" class="ar.com.signals.trading.util.web.ServidorUtil">
+      <property name="entorno">
+      	<value>${servidorutil.entorno}</value>
+      </property>
+ 	</bean>
+ 	
+	<!-- Para consumir Rest Service de Telegram -->
+	<bean id="restTemplateTelegram" class="org.springframework.web.client.RestTemplate">
+	  <constructor-arg>
+        <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory"
+            p:readTimeout="60000"
+            p:connectTimeout="5000" />
+      </constructor-arg>	  	
+	  <property name="messageConverters">
+	    <list>
+	      <ref bean="jsonMessageConverter" />
+	    </list>
+	  </property>
+	</bean>
+	<!-- Para hacer un Long Polling con Telegram -->
+	<bean id="restTemplateTelegramLongPolling" class="org.springframework.web.client.RestTemplate">
+	  <constructor-arg>
+        <bean class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory"
+            p:readTimeout="660000"
+            p:connectTimeout="5000" /><!-- 0= readTimeout infinito. Por las dudas pongo 11 minutos de timeout (cuando llamamos a getUpdates le decimos a telegram que corte a los 10 minutos) -->
+      </constructor-arg>	  	
+	  <property name="messageConverters">
+	    <list>
+	      <ref bean="jsonMessageConverter" />
+	    </list>
+	  </property>
+	</bean>
+	<bean id="tradingBotSrvImpl" class="ar.com.signals.trading.telegram.support.MyTelegramBotSrvImpl"></bean>
+	
+	<!-- Para llamar a TrueFx (Traiding) -->
+	<bean id="trueFxHttpClient" class="ar.com.signals.trading.util.rest.MyCustomHttpClientFactory"/>
+	
+	<!-- NEW 26/06/2018 Se implemento un FactoryBean para ObjectMapper para poder setearle que sea case insensitive, es decir que no importen las mayusculas en los fields de los json -->
+	<!-- <bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" /> -->
+	<bean id="jacksonObjectMapper" class="ar.com.signals.trading.util.rest.JacksonObjectMapperFactoryBean">
+	   <property name="insensitive" value="true"/>
+	</bean>
+	
+	<!-- Para respuesta application/vnd.ms-excel -->
+	<bean id="byteArrayMessageConverter" class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+	<!-- Para respuestas application/json -->		
+   	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    	<property name="objectMapper" ref="jacksonObjectMapper" /><!-- reutilizo el custom mapper que ignora las mayusculas del json (de los nombres de las variable), si bien no se necesita aca, pero para no crear otro mas uso el mismo -->
+    </bean>
+	
+</beans>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- *** Abtsract Main template, todos los templates deben extenderla *** -->
+    <definition name="main.template" template="/WEB-INF/template/mainTemplate.jsp">
+        <put-attribute name="menu" value="/WEB-INF/template/menu.jsp" />
+        <put-attribute name="breadcrumb" value="/WEB-INF/template/breadcrumb.jsp" />
+        <put-attribute name="mensajes" value="/WEB-INF/template/mensajes.jsp" />
+    </definition>
+    <!-- Es igual que el main.template pero sin el menu y el breadcrumb -->
+    <definition name="simple.main.template" template="/WEB-INF/template/mainTemplate.jsp">
+        <put-attribute name="mensajes" value="/WEB-INF/template/mensajes.jsp" />
+    </definition>
+    <!-- Es igual que el main.template pero sin el breadcrumb -->
+    <definition name="simple.menu.main.template" template="/WEB-INF/template/mainTemplate.jsp">
+    	<put-attribute name="menu" value="/WEB-INF/template/menu.jsp" />
+        <put-attribute name="mensajes" value="/WEB-INF/template/mensajes.jsp" />
+    </definition>
+    
+    <!-- *** TEMPLATES *** -->
+    <definition name="nuevo.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/nuevoTemplate.jsp" />
+    </definition>
+    <definition name="ver.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/verTemplate.jsp" />
+    </definition>
+    <definition name="listar.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/listarTemplate.jsp" />
+    </definition>
+    <definition name="listarWithFilter.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/listarWithFilterTemplate.jsp" />
+    </definition>
+    <definition name="wizard.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/wizardTemplate.jsp" />
+    </definition>
+    <definition name="generar.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/generarTemplate.jsp" />
+    </definition>
+    <definition name="importar.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/importarTemplate.jsp" />
+    </definition>
+    <definition name="chartWithFilter.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/chartWithFilterTemplate.jsp" />
+    </definition>    
+    <definition name="descargar.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/descargarTemplate.jsp" />
+    </definition>
+        
+    <definition name="nuevoPopUp.template" extends="simple.main.template">
+    	<put-attribute name="genericBody" value="/WEB-INF/template/nuevoTemplate.jsp" />
+    </definition>
+    <definition name="ayuda.template" extends="main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/ayudaTemplate.jsp" />
+    </definition>
+    <definition name="ayudaPopUp.template" extends="simple.main.template">
+        <put-attribute name="genericBody" value="/WEB-INF/template/ayudaTemplate.jsp" />
+    </definition>
+    
+    <!-- *** IMPLEMENTATIONS *** -->
+    <definition name="GENERAL.error.EXCEPTION" extends="main.template">
+        <put-attribute name="modulo" value="GENERAL" cascade="true"/>
+    	<put-attribute name="clase" value="error" cascade="true"/>
+    	<put-attribute name="accion" value="EXCEPTION" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/GENERAL/errorExcepction.jsp"/>
+    </definition>
+   	<definition name="GENERAL.HOME" extends="main.template">
+   		<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="HOME" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/GENERAL/home.jsp"/>
+    </definition>
+	<definition name="SEGURIDAD.LOGIN" extends="simple.main.template">
+	    <put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="LOGIN" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/SEGURIDAD/login.jsp"/>
+    </definition>
+    <definition name="SEGURIDAD.SELECCIONAR" extends="simple.main.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="SELECCIONAR" cascade="true"/>
+		<put-attribute name="variable" value="responsabilidadId" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/SEGURIDAD/loginSeleccionar.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.SELECCIONAR_2" extends="simple.main.template">
+        <put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="SELECCIONAR_2" cascade="true"/>
+		<put-attribute name="variable" value="firmaId" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/SEGURIDAD/loginSeleccionar.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.SELECCIONAR_3" extends="simple.main.template">
+        <put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="SELECCIONAR_3" cascade="true"/>
+		<put-attribute name="variable" value="sucursalId" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/SEGURIDAD/loginSeleccionar.jsp" cascade="true"/>
+    </definition>
+     
+    <definition name="SEGURIDAD.Usuario.NUEVO" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="NUEVO" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Usuario/usuarioNuevo.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.Usuario.EDITAR" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="EDITAR" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Usuario/usuarioNuevo.jsp" cascade="true"/>
+    </definition>    
+    <definition name="SEGURIDAD.Usuario.LISTAR" extends="listarWithFilter.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+    	<put-attribute name="filtro" value="/WEB-INF/pages/SEGURIDAD/Usuario/usuarioListarFiltro.jsp" cascade="true"/>
+        <put-attribute name="tabla" value="/WEB-INF/pages/SEGURIDAD/Usuario/usuarioListar.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.Usuario.EDITAR_2" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Usuario" cascade="true"/>
+    	<put-attribute name="accion" value="EDITAR_2" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Usuario/usuarioConfigurar.jsp" cascade="true"/>
+    </definition>
+    
+    <definition name="SEGURIDAD.Respo.NUEVO" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="NUEVO" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Respo/responsabilidadNuevo.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.Respo.EDITAR" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="EDITAR" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Respo/responsabilidadNuevo.jsp" cascade="true"/>
+    </definition>     
+    <definition name="SEGURIDAD.Respo.LISTAR" extends="listar.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Respo/responsabilidadListar.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.Respo.VER" extends="ver.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="Respo" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/Respo/responsabilidadVer.jsp" cascade="true"/>
+        <put-attribute name="bodyExtended" value="" cascade="true"/>
+    </definition>     
+    <definition name="SEGURIDAD.RespoUsuario.NUEVO" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="RespoUsuario" cascade="true"/>
+    	<put-attribute name="accion" value="NUEVO" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/RespoUsuario/respoUsuarioNuevo.jsp" cascade="true"/>
+    </definition>
+    <definition name="SEGURIDAD.RespoUsuario.EDITAR" extends="nuevo.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="RespoUsuario" cascade="true"/>
+    	<put-attribute name="accion" value="EDITAR" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/RespoUsuario/respoUsuarioNuevo.jsp" cascade="true"/>
+    </definition>    
+    <definition name="SEGURIDAD.RespoUsuario.LISTAR" extends="listar.template">
+    	<put-attribute name="modulo" value="SEGURIDAD" cascade="true"/>
+    	<put-attribute name="clase" value="RespoUsuario" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/SEGURIDAD/RespoUsuario/respoUsuarioListar.jsp" cascade="true"/>
+    </definition>  
+    <definition name="EVENTOS.Suscripcion.NUEVO" extends="nuevo.template">
+    	<put-attribute name="modulo" value="EVENTOS" cascade="true"/>
+    	<put-attribute name="clase" value="Suscripcion" cascade="true"/>
+    	<put-attribute name="accion" value="NUEVO" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/EVENTOS/Suscripcion/suscripcionNuevo.jsp" cascade="true"/>
+    </definition>    
+    <definition name="EVENTOS.Suscripcion.LISTAR" extends="listarWithFilter.template">
+    	<put-attribute name="modulo" value="EVENTOS" cascade="true"/>
+    	<put-attribute name="clase" value="Suscripcion" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+    	<put-attribute name="filtro" value="/WEB-INF/pages/EVENTOS/Suscripcion/suscripcionListarFiltro.jsp" cascade="true"/>
+        <put-attribute name="tabla" value="/WEB-INF/pages/EVENTOS/Suscripcion/suscripcionListar.jsp" cascade="true"/>
+    </definition>
+    <definition name="EVENTOS.RegistroNotificacion.LISTAR" extends="listar.template">
+    	<put-attribute name="modulo" value="EVENTOS" cascade="true"/>
+    	<put-attribute name="clase" value="RegistroNotificacion" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/EVENTOS/RegistroNotificacion/registroNotificacionListar.jsp" cascade="true"/>
+    </definition>
+    <definition name="EVENTOS.SuscripcionConfig.CONFIGURAR" extends="nuevo.template">
+    	<put-attribute name="modulo" value="EVENTOS" cascade="true"/>
+    	<put-attribute name="clase" value="SuscripcionConfig" cascade="true"/>
+    	<put-attribute name="accion" value="CONFIGURAR" cascade="true"/>
+    	<put-attribute name="labelAccion" value="CONFIGURAR" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/EVENTOS/SuscripcionConfig/suscripcionConfigConfigurar.jsp" cascade="true"/>
+    </definition>
+                
+    <definition name="CONFIGURACION.PropiedadCategoria.LISTAR" extends="listarWithFilter.template">
+    	<put-attribute name="modulo" value="CONFIGURACION" cascade="true"/>
+    	<put-attribute name="clase" value="PropiedadCategoria" cascade="true"/>
+    	<put-attribute name="accion" value="LISTAR" cascade="true"/>
+    	<put-attribute name="filtro" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaListarFiltro.jsp" cascade="true"/>
+        <put-attribute name="tabla" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaListar.jsp" cascade="true"/>
+    </definition> 
+    <definition name="CONFIGURACION.PropiedadCategoria.VER" extends="ver.template">
+    	<put-attribute name="modulo" value="CONFIGURACION" cascade="true"/>
+    	<put-attribute name="clase" value="PropiedadCategoria" cascade="true"/>
+    	<put-attribute name="accion" value="VER" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaNuevo.jsp" cascade="true"/>
+        <put-attribute name="bodyExtended" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaVer.jsp" cascade="true"/>
+    </definition>
+    <definition name="CONFIGURACION.PropiedadCategoria.NUEVO" extends="nuevo.template">
+    	<put-attribute name="modulo" value="CONFIGURACION" cascade="true"/>
+    	<put-attribute name="clase" value="PropiedadCategoria" cascade="true"/>
+    	<put-attribute name="accion" value="NUEVO" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaNuevo.jsp" cascade="true"/>
+    </definition>
+    <definition name="CONFIGURACION.PropiedadCategoria.EDITAR" extends="nuevo.template">
+    	<put-attribute name="modulo" value="CONFIGURACION" cascade="true"/>
+    	<put-attribute name="clase" value="PropiedadCategoria" cascade="true"/>
+    	<put-attribute name="accion" value="EDITAR" cascade="true"/>
+    	<put-attribute name="labelAccion" value="NUEVO" cascade="true"/>
+        <put-attribute name="body" value="/WEB-INF/pages/CONFIGURACION/PropiedadCategoria/propiedadCategoriaNuevo.jsp" cascade="true"/>
+    </definition>   
+      
+    <definition name="GENERAL.Trading.GRAFICAR" extends="main.template">
+    	<put-attribute name="modulo" value="GENERAL" cascade="true"/>
+    	<put-attribute name="clase" value="Trading" cascade="true"/>
+    	<put-attribute name="accion" value="GRAFICAR" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/GENERAL/Trading/tradingGraficar.jsp" cascade="true"/>
+    </definition>
+    <definition name="GENERAL.Trading.GRAFICAR_2" extends="main.template">
+    	<put-attribute name="modulo" value="GENERAL" cascade="true"/>
+    	<put-attribute name="clase" value="Trading" cascade="true"/>
+    	<put-attribute name="accion" value="GRAFICAR_2" cascade="true"/>
+        <put-attribute name="genericBody" value="/WEB-INF/pages/GENERAL/Trading/tradingGraficar2.jsp" cascade="true"/>
+    </definition>    
+    
+   
+</tiles-definitions>

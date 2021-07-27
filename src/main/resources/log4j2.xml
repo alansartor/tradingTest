@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="ConsoleAppender" target="SYSTEM_OUT">
+		    <PatternLayout
+		        pattern="trading %d{dd/MM HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingFile name="FileAppender" fileName="logs/msp.log" 
+		             filePattern="logs/msp-%d{yyyy-MM-dd}-%i.log">
+		    <PatternLayout>
+		        <Pattern>${LOG_PATTERN}</Pattern>
+		    </PatternLayout>
+		    <Policies>
+		        <SizeBasedTriggeringPolicy size="10MB" />
+		    </Policies>
+		    <DefaultRolloverStrategy max="10"/>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="ConsoleAppender" />
+			<AppenderRef ref="FileAppender"/>
+		</Root>
+<!--   		<Logger name="org.springframework" level="debug" />
+		<Logger name="org.springframework.security" level="debug" /> -->
+		<!-- Log all SQL DML statements as they are executed -->
+		
+		<!-- para ver sentencias sql -->
+<!--   		<Logger name="org.hibernate.SQL" level="debug" />
+		<Logger name="org.hibernate.tool.hbm2ddl" level="debug" /> -->
+ 		
+		
+<!-- 		<Logger name="org.hibernate.type" level="trace" />	
+		<Logger name="org.hibernate.pretty" level="debug" />
+		<Logger name="org.hibernate.cache" level="debug" />
+		<Logger name="org.hibernate.transaction" level="debug" />
+		<Logger name="org.hibernate.jdbc" level="debug" />
+		<Logger name="org.hibernate.hql.ast.AST" level="debug" />
+		<Logger name="org.hibernate.secure" level="debug" /> -->
+	</Loggers>
+</Configuration>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <!--······················································-->  
+    <!--       Definicion para el envio de Mail  SMTP         -->  
+    <!--······················································-->    
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  		<property name="host" value="${mail.servidor}"/>
+  		<property name="port" value="${mail.port}"/>
+  		<property name="username" value="${mail.username}"/>
+		<property name="javaMailProperties">
+			<!-- Gmail no permite que se use la cuenta de mail y password directemante (salvo que se active el uso de cuenta en app no seguras, pero cada tanto lo deshabilita, entonces se cambio a OAUTH2) -->
+		    <props>
+				<!-- Use SMTP transport protocol -->
+	            <prop key="mail.transport.protocol">smtp</prop>
+	            <!-- Use SMTP-AUTH to authenticate to SMTP server -->
+	            <prop key="mail.smtp.auth">true</prop>
+	            <!-- GMail requires OAuth to not be considered "low-security" -->
+	            <prop key="mail.smtp.auth.mechanisms">XOAUTH2</prop>
+	            <!-- Use TLS to encrypt communication with SMTP server -->
+	            <prop key="mail.smtp.starttls.enable">true</prop>
+	            <prop key="mail.debug">false</prop>				
+		    </props>
+	    </property>		
+	</bean>
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+	  <property name="from" value="${mail.remitente}"/>
+	</bean>
+</beans>

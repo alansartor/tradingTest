@@ -1,0 +1,206 @@
+/* Ajustamos el tamanio y el margen de los legends, ya que bootstrap los hace muy grande  */
+legend {
+  margin-bottom: 5px;/* 20px; */
+  margin-top: 10px;/* no tenian nada */
+  font-size: 16px;/* 21px; */
+}
+/* Para tener menos margenes entre los controles de los forms (13/11/2020 cambie de form-horizontal a body ya que listar sin filtro no tiene form) */
+.body .form-group {
+    margin-right: -5px;/* -15px; */
+    margin-left: -5px;/* -15px; */
+}
+.form-group {
+    margin-bottom: 3px;/* 15px; */
+}
+.help-block, .text-danger {
+    margin-top: 1px;/* 5px; */
+    margin-bottom: 2px;/* 10px; */
+    text-align:right;
+}
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    padding-right: 5px;/* 15px; */
+    padding-left: 5px;/* 15px; */
+}
+
+.alert {    
+    margin-bottom: 5px;/* 20px;*/
+}
+
+/* Para achicar titulos y sus margenes */
+.h3, h3 {
+    font-size: 20px;/* 24px; */
+}
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 10px;/* 20px; */
+    margin-bottom: 5px;/* 10px; */
+}
+/* Para achicar padding */
+.breadcrumb {
+    padding: 2px 10px;/* 8px 15px; */
+    background-color: #e9e9e9;
+    border-radius: 0px;/* por defecto viene con 4px */
+}
+.tab-content {
+	margin-top: 5px;
+	margin-bottom: 3px;/* estaba suelto, supongo que iba aca */
+}
+/* Para que aparezca una ruedita en los jquery autocomplete, tener cuidado que si el source lo manejamos a mano con un ajax, hay que sacar a mano esta classe en el input
+	Esta imagen no viene con el theme rolle con el que baje jquery-ui, lo descargue a mano de: http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/images/ui-anim_basic_16x16.gif*/
+.ui-autocomplete-loading {
+    background: white url("../images/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+/* Pongo el color de Bootsrtrap tanto para un link comun como para uno visitado */
+/* a, a:visited{
+     color: #337ab7;esto lo habia puesto principalmente para las acciones de las tablas, pero ahora lo cambie a botones, entonces saco esto ya que me modifica los botones de nueva entidad y exportacion del datatable
+} */
+/* esto hace girar en el lugar algo, se usa para agregar un asterisco girando en los botones cuando estan llamando a un ajax, lo copie de bootstrap-dialog, por ahora solo lo use en el login */
+.custom-icon-spin {
+  display: inline-block;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+/* ahora las acciones en las tablas se muetran con botones, entonces achico los margenes para que no ocupen tanto espacio */
+.custom-td-button {
+    padding: 2px 8px;
+}
+.custom-circle-button{
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	padding:0;
+}
+
+/* para mejorar el tamano de los BoostrapDialogs cuando se crean con un iframe adentro, entonces utilizo alguno de etas custom css de acuerdo a el largo de lo que estoy mostrando */
+@media only screen and (max-width: 480px) {
+	.custom-embed-responsive-md{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;
+	}
+	.custom-embed-responsive-lg{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;/* es el 95% de 600px que seria el calculo que hace el tamano anterior, entonces quedan iguales */
+	}
+	.custom-embed-responsive-xl{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;/* es el 95% de 600px que seria el calculo que hace el tamano anterior, entonces quedan iguales */
+	}
+}
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+	.custom-embed-responsive-md{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;/* es el 95% de 600px que seria el calculo que hace el tamano anterior, entonces quedan iguales */
+	}
+	.custom-embed-responsive-lg{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;/* es el 95% de 600px que seria el calculo que hace el tamano anterior, entonces quedan iguales */
+	}
+	.custom-embed-responsive-xl{
+		/* padding-bottom: 95%; en estos tamanos, el width del dialog es auto, entonces al ser el padding por porcentaje, va cambiando todo el timepo y queda mal, entonces pongo height fijo */
+		min-height: 570px;/* es el 95% de 600px que seria el calculo que hace el tamano anterior, entonces quedan iguales */
+	}		
+}
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+	.custom-embed-responsive-md{
+		padding-bottom: 95%;/* 95% * 600px (width del dialog en este tamano) = 570px height */
+	}
+	/* para los dialog, cuando la screen esta en este rango de size, el tamano del BootstrapDialog es muy chico, entonce le doy un poco mas */
+	/* por defecto el dialog se muestra con un width de 600, entonces con un padding con porcentaje el heithg es siempre igual  */
+	/*.modal-lg {
+    	width: auto;
+    	max-width: 750px;
+		margin: 10px;
+	}*/
+	.custom-embed-responsive-lg{
+		padding-bottom: 95%;
+	}
+	.custom-embed-responsive-xl{
+		padding-bottom: 95%;
+	}	
+}
+@media only screen and (min-width: 992px) {
+	.custom-embed-responsive-md{
+		padding-bottom: 45%;
+	}
+	.custom-embed-responsive-lg{
+		padding-bottom: 60%;
+	}
+	.custom-embed-responsive-xl{
+		padding-bottom: 75%;
+	}
+}
+/* La combinacion de estos dos estilos hacen que el boostrapdialog sea casi full size!, uno se aplica al dialog y el otro al div que contiene el iframe!
+si a un dialog le pongo cssClass entonces combinando asi puedo darle estilos!*/
+.custom-modal-dialog-lg .modal-dialog{
+	display: table;
+}
+.custom-embed-dialog-lg{
+	height: calc(90vh - 82.85px);/* le descuento el header del dialog y el margen superior*/
+	width: 90vw;
+}
+.custom-modal-dialog-md .modal-dialog{
+	display: table;
+}
+.custom-embed-dialog-md{
+	height: calc(70vh - 82.85px);/* le descuento el header del dialog y el margen superior*/
+	width: 70vw;
+}
+/* Para mostrar mejor los campos de los formularios */
+.my-panel{
+	border-color: #f5f5f5;
+	box-shadow: 0px 3px 4px 1px #ddd;
+	margin-bottom: 10px;
+	margin-left: 0px;
+ 	margin-top: 0px;
+	margin-right: 0px;
+}
+.my-panel-body{
+    padding: 10px;
+}
+.my-panel-title{
+	margin: 0px;
+}
+.my-panel-title-divider{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.my-col-nopadding{
+	padding: 0px;
+}
+.my-no-border-formpanel{
+	border: none;
+	margin: 0px;
+	-webkit-box-shadow: none;
+}
+.my-formpanel-body {
+    padding: 5px;
+    background-color: #f0f0f0;
+}
+.my-form-icon{
+	color:grey;
+}
+.my-formheader {
+    margin: 0px !important;
+}
+.my-formheader-title {
+	margin-top: 3px;
+	margin-bottom: 8px;
+}
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+@media (min-width: 768px) {
+  .row-eq-height {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.my-wrapper-corrector{
+	padding-bottom: 10px;
+}
+.my-panel-corrector{
+	height: 100%;
+	margin-bottom: 0px;
+}

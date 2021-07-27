@@ -1,0 +1,89 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+           
+    <!-- Se unifica toda la seguridad en un solo archivo, es decir aca estan tanto las url que se usan en MSC y en MSP -->
+           
+    <http pattern="/web/SEGURIDAD/LOGIN" security="none"/>
+    <!-- <http pattern="/web/SEGURIDAD/testOracleItem" security="none"/> --><!-- temporal para probar la conexion con oracle -->
+        
+    <!-- *** API Security *** Para los EndPoint expuestos para otros sistemas -->
+    <http pattern="/api/**" security="none"/>   
+    <http pattern="/web/support/REST/maps" security="none"/>   
+        
+    <!-- *** REST Security *** (usa un custom authenticationEntryPoint que devuelve un mensaje de error si no hay session abierta) -->
+    <beans:bean id="apiAuthenticationEntryPoint"  class="ar.com.signals.trading.util.spring.AjaxAwareAuthenticationEntryPoint">
+    	<beans:constructor-arg name="loginUrl" value="/web/SEGURIDAD/LOGIN"/>
+	</beans:bean>
+	<beans:bean id="myAccessDeniedHandlerImpl" class="ar.com.signals.trading.util.spring.MyRestAccessDeniedHandlerImpl"/>
+    <http pattern="/web/**/REST/**" use-expressions="true" entry-point-ref="apiAuthenticationEntryPoint">
+    	<intercept-url pattern="/web/SEGURIDAD/Usuario/REST/BUSCAR" access="hasAuthority('USUARIO_LISTAR')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Respo/REST/BUSCAR" access="hasAuthority('RESPONSABILIDAD_LISTAR')" />
+    	
+    	<intercept-url pattern="/web/SINCRONIZACION/PlanSincronizacion/REST/BUSCAR" access="hasAuthority('PLANTASINCRONIZACION_LISTAR')" />
+    	
+    	<intercept-url pattern="/**" access="isAuthenticated()" />
+    	<access-denied-handler ref="myAccessDeniedHandlerImpl"/>
+    	<csrf disabled="true"/><!-- para facilitar las llamadas rest -->
+	</http>
+	
+	<!-- *** Normal Request Security *** -->
+    <beans:bean id="webAuthenticationEntryPoint"  class="ar.com.signals.trading.util.spring.WebAuthenticationEntryPoint">
+    	<beans:constructor-arg name="loginUrl" value="/web/SEGURIDAD/LOGIN"/>
+	</beans:bean>
+    <http pattern="/**" use-expressions="true" entry-point-ref="webAuthenticationEntryPoint">
+    	<intercept-url pattern="/web/SEGURIDAD/Usuario/NUEVO" access="hasAuthority('USUARIO_NUEVO')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Usuario/EDITAR" access="hasAuthority('USUARIO_EDITAR')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Usuario/LISTAR" access="hasAuthority('USUARIO_LISTAR')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Respo/NUEVO" access="hasAuthority('RESPONSABILIDAD_NUEVO')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Respo/EDITAR" access="hasAuthority('RESPONSABILIDAD_EDITAR')" />
+    	<intercept-url pattern="/web/SEGURIDAD/Respo/LISTAR" access="hasAuthority('RESPONSABILIDAD_LISTAR')" />
+
+    	<intercept-url pattern="/web/SINCRONIZACION/PlanSincronizacion/NUEVO" access="hasAuthority('PLANTASINCRONIZACION_NUEVO')" />
+    	<intercept-url pattern="/web/SINCRONIZACION/PlanSincronizacion/EDITAR" access="hasAuthority('PLANTASINCRONIZACION_EDITAR')" />
+    	<intercept-url pattern="/web/SINCRONIZACION/PlanSincronizacion/LISTAR" access="hasAuthority('PLANTASINCRONIZACION_LISTAR')" />
+    	
+    	<intercept-url pattern="/**" access="isAuthenticated()" />   	
+      
+        <form-login
+			login-page='/web/SEGURIDAD/LOGIN'
+			default-target-url='/web/SEGURIDAD/SELECCIONAR'
+			always-use-default-target='true'
+			authentication-failure-url="/web/SEGURIDAD/LOGIN?auth=fail"
+			authentication-details-source-ref="myWebAuthenticationDetailsSource"/>
+			
+		<session-management session-authentication-strategy-ref="sas"/>
+		<logout delete-cookies="JSESSIONID" invalidate-session="true"/>
+		<csrf disabled="true"/>
+	</http>
+	<beans:bean name="myWebAuthenticationDetailsSource" class="ar.com.signals.trading.util.spring.MyWebAuthenticationDetailsSource"/>
+	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	<authentication-manager>		
+		<authentication-provider user-service-ref="myUserDetailsService">
+			<password-encoder ref="bcryptEncoder"/>			
+		</authentication-provider>				
+	</authentication-manager>
+	
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+	  <beans:constructor-arg>
+	    <beans:list>
+	      <beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+	        <beans:constructor-arg ref="sessionRegistry"/>
+	        <beans:property name="maximumSessions" value="1" />
+	        <beans:property name="exceptionIfMaximumExceeded" value="false" /><!-- para que mate la anterior y permita la nueva! -->
+	      </beans:bean>
+	      <beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+	      </beans:bean>
+	      <beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+	        <beans:constructor-arg ref="sessionRegistry"/>
+	      </beans:bean>
+	    </beans:list>
+	  </beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+</beans:beans>

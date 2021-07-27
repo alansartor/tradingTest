@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+       	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+<!-- 		The dispatcher-servlet.xml file contains all of your configuration for Spring MVC. -->
+<!-- 		So in it you will find beans such as ViewHandlerResolvers, ConverterFactories, Interceptors and so forth. -->
+<!-- 		All of these beans are part of Spring MVC which is a framework that structures how you handle web requests, -->
+<!-- 		providing useful features such as databinding, view resolution and request mapping -->
+
+<!-- 		IMPORTANTE: Dispatcher-context-file can see other beans declared in application-context file(s) but not the opposite -->
+
+<!-- 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>  -->
+	    
+    <!-- to support the annotated controller methods -->
+<!-- 	<context:component-scan base-package="ar.com.signals.trading" /> -->
+	<!-- Scans for annotated @Controllers in the classpath -->
+	<context:component-scan base-package="ar.com.signals.trading" use-default-filters="false">
+	    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	    <context:include-filter type="annotation" expression="org.springframework.scheduling.annotation.Scheduled"/>
+	</context:component-scan>
+    
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers><!-- Para poder usar @AuthenticationPrincipal Usuario user en los controller sin el session @SessionAttributes -->
+			<bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	
+	<!-- Este BeanPostProcessor Se utiliza para customizar el RequestMappingHandlerAdapter, ya que para definirlo a mano tendriamos que comentar 
+		'mvc:annotation-driven', lo que nos obligaria a definir a mano tambien todas las demas clases que configura este elemento de spring y sus propiedades -->
+	<bean class="ar.com.signals.trading.util.spring.WebMvcConfigurer"/>
+	<!-- Esta clase mas la configuracion que hace WebMvcConfigurer sirven para poder usar SessionAttributes del mismo controller en diferentes tab del navegador -->
+	<!-- La clase ConversationalSessionAttributeStore guarda atributos ocultos en el request para mantener conversaciones y no mesclar los atributos de la session -->
+	<bean name="requestDataValueProcessor" class="ar.com.signals.trading.util.spring.ConversationIdRequestProcessor" />
+	
+	<!-- Static resources css, js, images -->
+	<!-- recursos locales y recursos de otras librerias, ej ml.jar/META-INF/public-resources/* -->
+	<mvc:resources mapping="/public/**" location="/public-resources/"> <!-- por ahora no pongo esto del cahce ya que jode para hacer las pruebas, luego en produccion habria que activarlo!: cache-period="31556926"> -->
+	  <mvc:resource-chain resource-cache="true">
+	    <mvc:resolvers>
+	      <mvc:version-resolver>
+	        <mvc:content-version-strategy patterns="/**"/>
+	      </mvc:version-resolver>
+	      <bean class="org.springframework.web.servlet.resource.PathResourceResolver"/>
+	    </mvc:resolvers>
+	  </mvc:resource-chain>
+	</mvc:resources>
+		
+<!--<mvc:resources location="/bootstrap/" mapping="/bootstrap/**" />
+	<mvc:resources location="/bootstrap-plugins/" mapping="/bootstrap-plugins/**" />
+	<mvc:resources location="/jquery/" mapping="/jquery/**" />
+	<mvc:resources location="/dataTables/" mapping="/dataTables/**" />
+	<mvc:resources location="/font-awesome/" mapping="/font-awesome/**" />
+	<mvc:resources location="/jquery-plugins/" mapping="/jquery-plugins/**" />
+	<mvc:resources location="/jsLibraries/" mapping="/jsLibraries/**" /> -->
+	
+	<!-- <tx:annotation-driven /> -->
+
+ 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    	<!--Don't add suffix or prefix like you do with .jsp files-->
+    	<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+	</bean>
+ 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	    <property name="definitions">
+	        <list>
+	            <!-- <value>classpath:/META-INF/resources/WEB-INF/defs/mlTiles.xml</value> --><!-- los arhivos con los tiles no pueden tener _ -->
+	            <value>/WEB-INF/defs/tiles.xml</value>
+	            <value>/WEB-INF/defs/tilesAyuda.xml</value>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- Error Handler Page -->
+	<bean id="simpleMappingExceptionResolver" class="ar.com.signals.trading.util.spring.MyMappingExceptionResolver">
+	  <property name="exceptionMappings">
+		<props>
+			<!-- Para una excepcion en particular -->
+			<!-- <prop key="com.mkyong.wb.exception.CustomGenericException">error/generic_error</prop> -->
+			<!-- Para cualquier excepcion -->
+			<prop key="java.lang.Exception">GENERAL.error.EXCEPTION</prop>
+		</props>
+	  </property>
+	</bean>
+	
+	<!-- Creates the JSR-303 Validator -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	  <property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	
+<!-- 	Lo movi a applicationContext para que pueda usarse en los Service
+	Internationalization & Localization
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <property name="basenames">
+	        <list>
+	        	<value>classpath:/META-INF/messages/ValidationMessages</value>mensajes en ml jar
+	            <value>classpath:/META-INF/messages/messages_error_ml</value>mensajes en ml jar
+	            <value>classpath:/META-INF/messages/messages_ml</value>mensajes en ml jar
+	            <value>classpath:messages_error</value>
+	            <value>classpath:messages</value>
+	        </list>
+	    </property>
+    	<property name="defaultEncoding" value="UTF-8"/>
+    	<property name="cacheSeconds" value="60"/> 
+    	<property name="useCodeAsDefaultMessage" value="true" />para que no arroje excepcion cuando no encuentra el texto! 
+	</bean> -->
+	
+	<!-- Configures Handler Interceptors -->
+	<mvc:interceptors>
+	    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	    	<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+<!-- 	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
+<!-- 	    <property name="interceptors"> -->
+<!-- 	        <ref bean="localeChangeInterceptor" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	    <property name="paramName" value="lang" />
+	</bean> -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+	    <property name="defaultLocale" value="es"/>
+	</bean>
+	
+	<!-- Para poder subir archivos, tambien se requiere dependencia commons-fileupload -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10000000" />
+	</bean>
+</beans>

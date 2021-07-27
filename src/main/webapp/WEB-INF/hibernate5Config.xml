@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+   
+   <!-- <context:property-placeholder location="classpath:/environment/environment.properties" /> -->
+ 
+   <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name="sessionFactory" ref="sessionFactory" />
+      <qualifier value="principal"/>
+   </bean>
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+      <property name="dataSource" ref="pooledDataSource" />
+      <property name="packagesToScan">
+	    <list>
+	    	<value>ar.com.signals.trading</value>
+	    </list>
+	  </property>
+      <property name="hibernateProperties">
+         <props>
+            <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+            <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>		
+			<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+			<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+			<!-- <prop key="hibernate.default_schema">${hibernate.default_schema}</prop> -->
+			<!-- <prop key="hibernate.default_catalog">${hibernate.default_catalog}</prop> si se repite el schema aca, entonces hibernate crea mal la sentencia de alter tabla-->
+         </props>
+      </property>
+   </bean>
+   <bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+      <property name="driverClass" value="${jdbc.driverClassName}"/>
+      <property name="jdbcUrl" value="${jdbc.url}"/>
+      <property name="user" value="${jdbc.user}"/>
+      <property name="password" value="${jdbc.pass}"/>
+      <property name="maxPoolSize" value="100" />
+      <property name="maxStatements" value="0" />
+      <property name="minPoolSize" value="10" />
+      <!-- NEW 11/06/2014 Si no se genera ninguna query, mysql expira la conexion, para ello hay que configurar para que testee la conexion periodicamente-->
+      <property name="idleConnectionTestPeriod" value="6000" /><!-- In seconds -->
+   </bean>
+   
+   <!-- Traduce las excepciones de Hibernate de los dao (marcados con @Repository) en excepciones de Spring -->
+   <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+</beans>

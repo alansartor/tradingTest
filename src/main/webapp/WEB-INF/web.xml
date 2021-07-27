@@ -1,0 +1,105 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	      version="3.0">
+    <display-name>Trading Signals Application</display-name>
+  	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param><!-- poner esto antes que load-on-startup. Este sirve para indicar a Spring que no resuelva un 404, sino que arroje una excepcion que luego es manejada por MyNoHandlerFoundControllerAdvice -->
+		    <param-name>throwExceptionIfNoHandlerFound</param-name>
+		    <param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+ 
+	<!-- para los controllers mvc -->
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+ 
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:net/bull/javamelody/monitoring-spring.xml
+			/WEB-INF/applicationContext.xml, 
+			/WEB-INF/spring-security.xml
+		</param-value>
+	</context-param>
+ 
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- Filtros para monitoreo de la aplicacion -->
+	<!-- A partir de Servlet API 3.0 no es necesario declarar esto, con que este el jar de javamelody ya se levanta todo, pero si queremos customizar los include and exclude, entonces si declaramos -->
+	<filter>
+		<filter-name>javamelody</filter-name>
+		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+		<init-param>	
+    		<param-name>system-actions-enabled</param-name>
+        	<param-value>false</param-value>
+        </init-param>
+		<init-param>
+        	<param-name>no-database</param-name>
+        	<param-value>true</param-value>
+        </init-param>
+		<init-param>
+        	<param-name>http-transform-pattern</param-name><!-- para agrupar los request, ya que los rest tienen variables dentro del path, esto hace que se agrupen las estadisticas -->
+        	<param-value>\d+</param-value><!-- reemplaza numero por un $ -->
+        </init-param>
+        <init-param>
+       		<param-name>spring-transform-pattern</param-name><!-- para agrupar los request, ya que los rest tienen variables dentro del path, esto hace que se agrupen las estadisticas -->
+       		<param-value>\d+</param-value><!-- reemplaza nro por $ -->
+        </init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>javamelody</filter-name>
+		<url-pattern>/web/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>javamelody</filter-name>
+		<url-pattern>/api/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>javamelody</filter-name>
+		<url-pattern>/monitoring</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>
+        
+	<!-- Filtros de Spring Security -->
+	<filter>
+	  <filter-name>springSecurityFilterChain</filter-name>
+	  <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>springSecurityFilterChain</filter-name>
+	  <!-- <url-pattern>/*</url-pattern>para que la seguridad camptuere /login y /logout tienen que estar en los filtros -->
+	  <url-pattern>/web/*</url-pattern>
+	  <url-pattern>/api/*</url-pattern>
+	  <url-pattern>/login</url-pattern>
+	  <url-pattern>/logout</url-pattern>
+	</filter-mapping>
+	
+	<!-- Filtros para character encoding -->
+	<filter>
+	    <filter-name>characterEncodingFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+	        <param-name>encoding</param-name>
+	        <param-value>UTF-8</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>forceEncoding</param-name>
+	        <param-value>true</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>characterEncodingFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-app>
