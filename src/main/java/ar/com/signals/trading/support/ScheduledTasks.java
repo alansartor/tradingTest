@@ -1,5 +1,7 @@
 package ar.com.signals.trading.support;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +22,15 @@ import ar.com.signals.trading.configuracion.service.PropiedadCategoriaSrv;
 import ar.com.signals.trading.eventos.domain.RegistroNotificacion;
 import ar.com.signals.trading.eventos.service.RegistroNotificacionSrv;
 import ar.com.signals.trading.eventos.support.MetodoNotificacion;
+import ar.com.signals.trading.seguridad.domain.Respo;
+import ar.com.signals.trading.seguridad.domain.RespoUsuario;
+import ar.com.signals.trading.seguridad.domain.Usuario;
+import ar.com.signals.trading.seguridad.service.RespoSrv;
+import ar.com.signals.trading.seguridad.service.RespoUsuarioSrv;
 import ar.com.signals.trading.seguridad.service.UsuarioSrv;
+import ar.com.signals.trading.seguridad.support.Privilegio;
 import ar.com.signals.trading.seguridad.support.SeguridadUtil;
+import ar.com.signals.trading.seguridad.support.TipoResponsabilidad;
 import ar.com.signals.trading.telegram.support.MyTelegramBotSrvImpl;
 import ar.com.signals.trading.telegram.support.TelegramUtil;
 import ar.com.signals.trading.trading.support.TrueFXSrv;
@@ -37,6 +46,8 @@ public class ScheduledTasks {
 	@Resource private PropiedadCategoriaSrv propiedadCategoriaSrv;
 	
 	@Resource private UsuarioSrv usuarioSrv;
+	@Resource private RespoSrv respoSrv;
+	@Resource private RespoUsuarioSrv respoUsuarioSrv;
 	@Resource private TrueFXSrv trueFXSrv;
 	@Resource private RegistroNotificacionSrv registroNotificacionSrv;
 	@Resource(name = "tradingBotSrvImpl") private MyTelegramBotSrvImpl tradingBotSrvImpl;
@@ -50,7 +61,46 @@ public class ScheduledTasks {
 
 	@Scheduled(initialDelay = 5000, fixedDelay=Long.MAX_VALUE)//al tener tanto tiempo nunca se va a volver a ejecutar
 	public void onStartUp() {
-		
+		Usuario usuario = new Usuario();
+		usuario.setUsername("admin");
+		usuario.setDescripcion("par apruebas");
+		//usuario.setId(sujeto.getId());esto causa error, hace que hibernate haga un update en vez d eun insert del usuario
+		usuario.setUser_enabled(true);
+		usuario.setUser_email("pepe@hotmail.com");
+		usuario.setCreation_date(new Timestamp(new Date().getTime()));
+		usuario.setLast_update_date(usuario.getCreation_date());
+		usuarioSrv.persistir(usuario, "admin");
+		Respo respo = new Respo();
+		//respo.setId(-1l);esto causa error, hace que hibernate haga un update en vez d eun insert del usuario
+		respo.setCodigo("superUsuario");
+		respo.setDescripcion("Super usuario que tiene acceso a la administracion general de Responsabilidades y Usuarios");
+		respo.setTipo(TipoResponsabilidad.SuperUsuario);
+		respo.setCreation_date(usuario.getCreation_date());
+		respo.setLast_update_date(usuario.getCreation_date());
+		respo.setActivo(true);
+		List<Privilegio> privilegios = new ArrayList<>();
+		privilegios.add(Privilegio.USUARIO_NUEVO);
+		privilegios.add(Privilegio.USUARIO_EDITAR);
+		privilegios.add(Privilegio.USUARIO_LISTAR);
+		privilegios.add(Privilegio.RESPONSABILIDAD_NUEVO);
+		privilegios.add(Privilegio.RESPONSABILIDAD_EDITAR);
+		privilegios.add(Privilegio.RESPONSABILIDAD_LISTAR);
+		privilegios.add(Privilegio.RESPONSABILIDAD_VER);
+		privilegios.add(Privilegio.RESPOUSUARIO_NUEVO);
+		privilegios.add(Privilegio.RESPOUSUARIO_EDITAR);
+		privilegios.add(Privilegio.RESPOUSUARIO_LISTAR);
+		privilegios.add(Privilegio.TRADING_GRAFICAR);
+		privilegios.add(Privilegio.TRADING_GRAFICAR_2);
+		respo.setPrivilegios(privilegios);//Arrays.asList(Privilegio.values()));//le doy todos los privilegios que existen!
+		respoSrv.persistir(respo);
+		RespoUsuario ru = new RespoUsuario();
+		ru.setRespo(respo);
+		//ru.setSujeto(sujeto);
+		ru.setUsuario(usuario);
+		ru.setCreation_date(usuario.getCreation_date());
+		ru.setLast_update_date(usuario.getCreation_date());
+		ru.setActivo(true);
+		respoUsuarioSrv.persistir(ru);
 	}
 	
 	@Scheduled(cron = "0 0 3 * * *")//todos los dias a las 3:00 am
