@@ -62,7 +62,7 @@ public class ScheduledTasks {
 	@Scheduled(initialDelay = 5000, fixedDelay=Long.MAX_VALUE)//al tener tanto tiempo nunca se va a volver a ejecutar
 	public void onStartUp() {
 		//creo un usuario admin de prueba
-		//probando cambios desde eclipse
+		//comentario de gitHub y eclipse (merge)
 		Usuario usuario = new Usuario();
 		usuario.setUsername("admin");
 		usuario.setDescripcion("par apruebas");
