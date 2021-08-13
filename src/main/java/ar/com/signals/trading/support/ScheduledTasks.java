@@ -80,7 +80,7 @@ public class ScheduledTasks {
 		respo.setCreation_date(usuario.getCreation_date());
 		respo.setLast_update_date(usuario.getCreation_date());
 		respo.setActivo(true);
-		List<Privilegio> privilegios = new ArrayList<>();
+		/*		List<Privilegio> privilegios = new ArrayList<>();
 		privilegios.add(Privilegio.USUARIO_NUEVO);
 		privilegios.add(Privilegio.USUARIO_EDITAR);
 		privilegios.add(Privilegio.USUARIO_LISTAR);
@@ -92,8 +92,8 @@ public class ScheduledTasks {
 		privilegios.add(Privilegio.RESPOUSUARIO_EDITAR);
 		privilegios.add(Privilegio.RESPOUSUARIO_LISTAR);
 		privilegios.add(Privilegio.TRADING_GRAFICAR);
-		privilegios.add(Privilegio.TRADING_GRAFICAR_2);
-		respo.setPrivilegios(privilegios);//Arrays.asList(Privilegio.values()));//le doy todos los privilegios que existen!
+		privilegios.add(Privilegio.TRADING_GRAFICAR_2);*/
+		respo.setPrivilegios(Arrays.asList(Privilegio.values()));//Arrays.asList(Privilegio.values()));//le doy todos los privilegios que existen!
 		respoSrv.persistir(respo);
 		RespoUsuario ru = new RespoUsuario();
 		ru.setRespo(respo);

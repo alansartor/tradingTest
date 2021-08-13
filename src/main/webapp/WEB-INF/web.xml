@@ -33,6 +33,16 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	<!-- Filtros para vulnerabilidades -->
+ 	<filter>
+	  <filter-name>myFilter</filter-name>
+	  <filter-class>ar.com.signals.trading.util.spring.MyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>myFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- Filtros para monitoreo de la aplicacion -->
 	<!-- A partir de Servlet API 3.0 no es necesario declarar esto, con que este el jar de javamelody ya se levanta todo, pero si queremos customizar los include and exclude, entonces si declaramos -->
 	<filter>

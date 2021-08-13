@@ -64,6 +64,7 @@ body {
  	<tiles:importAttribute name="variable"/>
 	<div class="center-block">
 		<form:form  modelAttribute="entidadDTO" name="entidadDTO" class="form-horizontal">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<div class="panel panel-default">
 		  <div class="panel-heading"><span class="glyphicon glyphicon-hand-down"></span> <spring:message code="menu.${modulo}.${clase}.${accion}" arguments="${subClase}," htmlEscape="false"/></div>
 		  <div class="panel-body" style="padding: 0px;">

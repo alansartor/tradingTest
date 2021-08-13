@@ -127,6 +127,10 @@
 	    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 	    	<property name="paramName" value="lang" />
 		</bean>
+		<mvc:interceptor>
+        	<mvc:mapping path="/web/**"/>
+        	<bean class="ar.com.signals.trading.util.spring.MyInterceptor" />
+    	</mvc:interceptor>			
 	</mvc:interceptors>
 <!-- 	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
 <!-- 	    <property name="interceptors"> -->

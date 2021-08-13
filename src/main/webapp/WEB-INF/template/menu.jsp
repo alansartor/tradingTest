@@ -87,6 +87,10 @@ div.my-custom-popover-content{
 	});
 </script>
 <sec:authentication property="principal" var="user" />
+<form action="${pageContext.servletContext.contextPath}/logout" method="post" hidden="true" name="logoutForm">
+	<sec:csrfInput />
+    <input type="submit" value="Logout" />
+</form>
 <div class="menu">
 <nav class="navbar navbar-inverse navbar-default navbar-static-top">
   <div class="container-fluid">
@@ -134,7 +138,7 @@ div.my-custom-popover-content{
             <li><a href="${pageContext.servletContext.contextPath}/web/EVENTOS/SuscripcionConfig/CONFIGURAR"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> Configuracion de Alertas</a></li>
             <li><a href="${pageContext.servletContext.contextPath}/web/SEGURIDAD/SELECCIONAR"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Cambiar Responsabilidad</a></li>	 
             <li class="divider"></li>
-            <li><a href="${pageContext.servletContext.contextPath}/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Salir</a></li><!-- spring security 4 cambio j_spring_security_logout -->
+            <li><a href="javascript: document.logoutForm.submit();"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Salir</a></li><!-- spring security 4 cambio j_spring_security_logout -->
           </ul>
         </li>
       </ul>

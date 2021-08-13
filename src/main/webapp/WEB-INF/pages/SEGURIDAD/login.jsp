@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script type="text/javascript">
  	var $jQ = jQuery.noConflict();
  	$jQ(function () {
@@ -21,6 +22,7 @@
 	  <div class="panel-body">
 		<form class="form-signin" id="form" action="<c:url value='/login'/>" method="POST"><!-- spring 4 cambio el el action, antes era /j_spring_security_check -->
 			<input type="hidden" id="user_target_url" name="user_target_url" value="${user_target_url}"/>
+		    <sec:csrfInput /><%-- dentro de un form:form usamos: <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
 		    <c:if test="${'fail' eq param.auth}">
 		        <div><c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/></div>
 		    </c:if>

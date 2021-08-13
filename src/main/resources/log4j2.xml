@@ -21,6 +21,8 @@
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender"/>
 		</Root>
+		
+		<Logger name="org.springframework.security.web.csrf" level="debug" />
 <!--   		<Logger name="org.springframework" level="debug" />
 		<Logger name="org.springframework.security" level="debug" /> -->
 		<!-- Log all SQL DML statements as they are executed -->
